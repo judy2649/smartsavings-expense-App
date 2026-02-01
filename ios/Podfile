@@ -1,0 +1,7 @@
+# Minimal Podfile placeholder. Run `flutter create .` on macOS to generate a full Podfile and iOS project.
+platform :ios, '11.0'
+
+target 'Runner' do
+  use_frameworks!
+  use_modular_headers!
+end

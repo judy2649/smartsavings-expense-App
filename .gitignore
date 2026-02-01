@@ -1,0 +1,91 @@
+# Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub/
+build/
+*.apk
+*.app
+*.ipa
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+flutter_*.zip
+flutter_*.tar.gz
+pubspec.lock
+
+# iOS
+ios/Flutter/Generated.xcconfig
+ios/Flutter/ephemeral/
+ios/Flutter/flutter_export_environment.sh
+ios/Pods/
+ios/Podfile.lock
+ios/.symlinks/
+ios/.dart_tool/
+ios/Flutter/Flutter.framework/
+ios/Flutter/Flutter.podspec
+
+# Android
+android/.gradle
+android/app/debug
+android/app/profile
+android/app/release
+android/.gradle/
+android/**/gradle-wrapper.jar
+android/**/gradlew
+android/**/gradlew.bat
+android/**/local.properties
+android/**/GeneratedPluginRegistrant.java
+android/key.properties
+
+# Web
+web/generated_plugin_registrant.dart
+web/canvaskit/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.iml
+*.sublime-workspace
+*.sublime-project
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Firebase
+firebase-debug.log
+*.google.json
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Misc
+*.log
+*.pyc
+*.pyo
+.atom/
+.buildlog/
+.history
+.svn/
+migrate_working_dir/
+
+# Project specific
+google-services.json
+GoogleService-Info.plist
+firebase_options.dart (keep but update with your credentials)
