@@ -62,7 +62,6 @@ class BudgetDashboardScreen extends StatelessWidget {
 
   Widget _buildOverviewSection(double totalBudget, double totalSpent) {
     final percentage = (totalSpent / totalBudget * 100).toStringAsFixed(0);
-    final remaining = totalBudget - totalSpent;
 
     return Container(
       padding: const EdgeInsets.all(20),

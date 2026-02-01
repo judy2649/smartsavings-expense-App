@@ -8,8 +8,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:smart_savings/main.dart';
-
 void main() {
   testWidgets('Minimal MaterialApp builds', (WidgetTester tester) async {
     // Use a simple MaterialApp to avoid app-level side effects in tests.

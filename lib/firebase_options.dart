@@ -1,5 +1,4 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
-import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show defaultTargetPlatform, TargetPlatform, kIsWeb;
 
 class DefaultFirebaseOptions {

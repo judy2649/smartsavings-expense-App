@@ -26,16 +26,18 @@ class MockUserCredential implements fb.UserCredential {
   @override
   fb.User? get user => null;
 
-  @override
+  // expose the underlying LocalUser for tests and local usage
+  LocalUser get localUser => _localUser;
+
+  // previousUserCredential and operationType are not part of the
+  // fb.UserCredential interface in the targeted SDK, so don't mark
+  // them with @override.
   fb.UserCredential? get previousUserCredential => null;
 
-  @override
   fb.AuthCredential? get credential => null;
 
-  @override
   dynamic get operationType => null;
 
-  @override
   fb.AdditionalUserInfo? get additionalUserInfo => null;
 }
 
@@ -49,14 +51,14 @@ class AuthRepository {
   static final Map<String, String> _resetTokens = {}; // email -> temp token
   
   // Stream controller for auth state changes
-  final _authStateController = Stream<LocalUser?>.value(null).asBroadcastStream();
-
   AuthRepository({required fb.FirebaseAuth auth}) : _auth = auth;
 
   LocalUser? get currentLocalUser => _currentLocalUser;
 
   Stream<fb.User?> get authStateChanges {
-    return Stream.value(null);
+    // delegate to the underlying FirebaseAuth stream so consumers
+    // get real auth state updates when running with Firebase.
+    return _auth.authStateChanges();
   }
 
   // Email validation
@@ -147,8 +149,8 @@ class AuthRepository {
       throw Exception('Invalid email format');
     }
 
-    // Check if user exists
-    final user = _localUsers.values.firstWhere(
+    // Check if user exists (will throw if not found)
+    _localUsers.values.firstWhere(
       (u) => u.email.toLowerCase() == email.toLowerCase(),
       orElse: () => throw Exception('No account found with this email'),
     );

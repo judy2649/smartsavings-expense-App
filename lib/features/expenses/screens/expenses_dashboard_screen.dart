@@ -165,7 +165,6 @@ class _ExpensesDashboardScreenState extends State<ExpensesDashboardScreen> {
         ),
         const SizedBox(height: 16),
         ...categories.map((entry) {
-          final percentage = (entry.value / maxAmount * 100).toStringAsFixed(0);
           return Padding(
             padding: const EdgeInsets.only(bottom: 16),
             child: Column(

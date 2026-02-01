@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../providers/auth_provider.dart';
@@ -187,8 +186,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Widget _buildResetCodeScreen(BuildContext context) {
     final resetPasswordController = TextEditingController();
     final confirmPasswordController = TextEditingController();
-    bool showPassword = false;
-    bool showConfirmPassword = false;
 
     return Scaffold(
       backgroundColor: AppTheme.lightBg,
