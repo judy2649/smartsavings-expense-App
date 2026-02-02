@@ -355,6 +355,69 @@ flutter run
 # Visit Accounts to confirm connect buttons are disabled
 ```
 
+### NEW: UI/UX and Functional Improvements (Latest Session)
+
+#### Welcome Page Redesign ✅
+- Changed background image from generic finance to **people-focused image** (team collaboration)
+- Updated text colors: **white text throughout** for better visibility against background
+- Card styling: **Blue attractive color (#1F4788)** with elevation for depth
+- Feature items display with white checkmarks and white text
+
+#### Dashboard V2 - Enhanced with Real Data ✅
+- **White text on colored backgrounds** for maximum visibility
+- **Total Balance Card**: Blue (#2196F3) background, displays live balance from transactions provider
+- **Quick Action Buttons**: Fully functional with color-coded icons:
+  - Add Expense (Red) → navigates to add transaction screen
+  - Add Budget (Green) → navigates to add budget screen
+  - Add Goal (Orange) → navigates to add goal screen
+  - Connect Account (Purple) → disabled in demo
+- **Budget Overview**: Horizontal scrolling cards showing budget progress (green #4CAF50)
+- **Spending Breakdown**: Yellow card (#FFC107) with pie chart mockup showing top categories
+- **Recent Transactions**: Real-time list showing:
+  - Transaction icon (income/expense color-coded)
+  - Category name
+  - Transaction description
+  - Amount with +/- indicator
+  - All transactions synced from TransactionsProvider
+
+#### Data Persistence & Functionality ✅
+- **All dashboard data is real-time** connected to TransactionsProvider
+- User can **add expenses** via the Add button → saved to provider → visible in Recent Transactions
+- User can **add budgets** via the Budget button → saved and tracked
+- User can **add goals** via the Goal button → saved and displayed on Goals dashboard
+- **Account linking disabled** for safety (prevents accidental data imports)
+- App **loads transactions on dashboard initialization** from TransactionsProvider.loadTransactions()
+
+#### Color & Text Improvements ✅
+- Removed pink/purple text (#E0B3F5) replaced with white for contrast
+- All dashboard elements use attractive, professional color scheme:
+  - Blue: Primary actions (#1F4788, #2196F3)
+  - Green: Budget/Savings (#4CAF50)
+  - Yellow: Analytics (#FFC107)
+  - Red: Expenses/Alerts (#FF6B6B)
+- Text hierarchy: Bold titles, regular body, muted subtitles (white70, white-opacity)
+
+#### Functional Buttons Status ✅
+- ✅ Add Expense Button - Fully functional (routes to add transaction screen)
+- ✅ Add Budget Button - Fully functional (routes to add budget screen)
+- ✅ Add Goal Button - Fully functional (routes to add goal screen)
+- ✅ Connect Account Button - Disabled (shows snackbar message for safety)
+- ✅ All dashboard data reflects real transactions, budgets, and goals
+- ✅ Dashboard updates live when new data is added
+
+How to test features end-to-end:
+```bash
+flutter run
+# Login or signup
+# Home dashboard shows:
+#   - Total Balance (calculated from all transactions)
+#   - Recent Transactions (from provider)
+#   - Quick action buttons (all functional except Connect)
+# Click "Add Expense" → Add transaction → Returns to dashboard → New transaction visible
+# Click "Add Budget" → Create budget → Budget appears in overview
+# Click "Add Goal" → Create goal → Goal saved and tracked
+```
+
 ---
 
 ## 🏆 What Makes This Special
