@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import '../../features/auth/screens/login_screen.dart';
 import '../../features/auth/screens/signup_screen.dart';
 import '../../features/auth/screens/forgot_password_screen.dart';
+import '../../features/auth/screens/email_verification_screen.dart';
 import '../../features/home/screens/home_page.dart';
 // Use the new UI prototype screens as the primary dashboards
 import '../../features/ui/ui_screens.dart' as ui_primary;
@@ -46,6 +47,13 @@ class AppRouter {
       GoRoute(
         path: '/forgot-password',
         builder: (context, state) => const ForgotPasswordScreen(),
+      ),
+      GoRoute(
+        path: '/verify-email',
+        builder: (context, state) {
+          final email = state.uri.queryParameters['email'] ?? '';
+          return EmailVerificationScreen(email: email);
+        },
       ),
       
       // Main App Routes

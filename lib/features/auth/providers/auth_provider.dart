@@ -9,11 +9,14 @@ class AuthProvider extends ChangeNotifier {
   LocalUser? _user;
   bool _isLoading = false;
   String? _errorMessage;
+  bool _emailVerificationSent = false;
+  bool get emailVerificationSent => _emailVerificationSent;
 
   LocalUser? get user => _user;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
   bool get isAuthenticated => _user != null;
+  bool get isEmailVerified => _user?.emailVerified ?? false;
 
   AuthProvider() {
     _initAuthState();
@@ -39,6 +42,11 @@ class AuthProvider extends ChangeNotifier {
 
       final credential = await _authRepository.signUp(email: email, password: password);
       _user = _authRepository.currentLocalUser;
+      
+      // Send verification email
+      await _authRepository.sendEmailVerification(email);
+      _emailVerificationSent = true;
+      
       _isLoading = false;
       notifyListeners();
       return credential;
@@ -61,6 +69,15 @@ class AuthProvider extends ChangeNotifier {
 
       await _authRepository.login(email: email, password: password);
       _user = _authRepository.currentLocalUser;
+      
+      // Check if email is verified
+      if (!_user!.emailVerified) {
+        _errorMessage = 'Please verify your email before logging in. Check your inbox for the verification link.';
+        _emailVerificationSent = true;
+        _isLoading = false;
+        notifyListeners();
+        return;
+      }
       
       _isLoading = false;
       notifyListeners();
@@ -161,5 +178,65 @@ class AuthProvider extends ChangeNotifier {
   void clearError() {
     _errorMessage = null;
     notifyListeners();
+  }
+
+  Future<bool> verifyEmail(String email, String token) async {
+    try {
+      _isLoading = true;
+      _errorMessage = null;
+      notifyListeners();
+
+      final result = await _authRepository.verifyEmailWithToken(email, token);
+      if (result && _user?.email == email) {
+        _user!.emailVerified = true;
+      }
+      
+      _isLoading = false;
+      notifyListeners();
+      return result;
+    } catch (e) {
+      _errorMessage = e.toString().replaceAll('Exception: ', '');
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<void> resendVerificationEmail(String email) async {
+    try {
+      _isLoading = true;
+      _errorMessage = null;
+      notifyListeners();
+
+      await _authRepository.resendVerificationEmail(email);
+      _emailVerificationSent = true;
+      
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      _errorMessage = e.toString().replaceAll('Exception: ', '');
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> markEmailAsVerified(String email) async {
+    try {
+      _isLoading = true;
+      _errorMessage = null;
+      notifyListeners();
+
+      await _authRepository.markEmailAsVerified(email);
+      if (_user?.email == email) {
+        _user!.emailVerified = true;
+      }
+      
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      _errorMessage = e.toString().replaceAll('Exception: ', '');
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 }

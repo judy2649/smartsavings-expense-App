@@ -10,6 +10,11 @@ class LocalUser {
   bool isAnonymous = false;
   final DateTime createdAt;
   String? passwordHash;
+  String? verificationToken;
+  DateTime? verificationTokenExpiry;
+  bool get isEmailVerificationExpired => 
+    verificationTokenExpiry != null && 
+    verificationTokenExpiry!.isBefore(DateTime.now());
 
   LocalUser({
     required this.uid, 
@@ -216,5 +221,86 @@ class AuthRepository {
 
     _currentLocalUser = user;
     return MockUserCredential(localUser: user);
+  }
+
+  // Send verification email
+  Future<void> sendEmailVerification(String email) async {
+    // Find user by email
+    final user = _localUsers.values.firstWhere(
+      (u) => u.email.toLowerCase() == email.toLowerCase(),
+      orElse: () => throw Exception('User not found'),
+    );
+
+    // Generate verification token (in production, this would be sent via Firebase)
+    final verificationToken = 'verify_${DateTime.now().millisecondsSinceEpoch}_${user.uid.hashCode.abs()}';
+    user.verificationToken = verificationToken;
+    user.verificationTokenExpiry = DateTime.now().add(const Duration(hours: 24));
+
+    // In a real app, send email via Firebase sendSignInLinkToEmail or similar
+    // For now, we just log and set the token
+    print('✉️ Verification email would be sent to: $email');
+    print('🔗 Verification token (for testing): $verificationToken');
+  }
+
+  // Verify email with token
+  Future<bool> verifyEmailWithToken(String email, String token) async {
+    // Find user by email
+    final user = _localUsers.values.firstWhere(
+      (u) => u.email.toLowerCase() == email.toLowerCase(),
+      orElse: () => throw Exception('User not found'),
+    );
+
+    // Check if token exists and is valid
+    if (user.verificationToken == null || user.verificationToken != token) {
+      throw Exception('Invalid verification token');
+    }
+
+    // Check if token has expired
+    if (user.isEmailVerificationExpired) {
+      throw Exception('Verification token has expired. Please request a new one.');
+    }
+
+    // Mark email as verified
+    user.emailVerified = true;
+    user.verificationToken = null;
+    user.verificationTokenExpiry = null;
+
+    return true;
+  }
+
+  // Check if email is verified
+  bool isEmailVerified(String email) {
+    final user = _localUsers.values.firstWhere(
+      (u) => u.email.toLowerCase() == email.toLowerCase(),
+      orElse: () => LocalUser(uid: '', email: ''),
+    );
+    return user.uid.isNotEmpty && user.emailVerified;
+  }
+
+  // Verify email directly (for testing/admin purposes)
+  Future<void> markEmailAsVerified(String email) async {
+    final user = _localUsers.values.firstWhere(
+      (u) => u.email.toLowerCase() == email.toLowerCase(),
+      orElse: () => throw Exception('User not found'),
+    );
+    user.emailVerified = true;
+    user.verificationToken = null;
+    user.verificationTokenExpiry = null;
+  }
+
+  // Resend verification email
+  Future<void> resendVerificationEmail(String email) async {
+    final user = _localUsers.values.firstWhere(
+      (u) => u.email.toLowerCase() == email.toLowerCase(),
+      orElse: () => throw Exception('User not found'),
+    );
+
+    // Generate new verification token
+    final verificationToken = 'verify_${DateTime.now().millisecondsSinceEpoch}_${user.uid.hashCode.abs()}';
+    user.verificationToken = verificationToken;
+    user.verificationTokenExpiry = DateTime.now().add(const Duration(hours: 24));
+
+    print('✉️ Verification email resent to: $email');
+    print('🔗 New verification token (for testing): $verificationToken');
   }
 }

@@ -351,12 +351,14 @@ class _SignupScreenState extends State<SignupScreen> {
         if (authProvider.user != null) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: const Text('Account created successfully!'),
+              content: const Text('Account created! Please verify your email.'),
               backgroundColor: AppTheme.successColor,
             ),
           );
           Future.delayed(const Duration(milliseconds: 500), () {
-            if (mounted) context.go('/home/dashboard');
+            if (mounted) {
+              context.go('/verify-email?email=${_emailController.text.trim()}');
+            }
           });
         } else if (authProvider.errorMessage != null) {
           _showError(context, authProvider.errorMessage!);
