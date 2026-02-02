@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  // Custom Color Palette: Purple, Pink, Orange, Black
-  static const Color primaryColor = Color(0xFF7C3AED);        // Purple
-  static const Color primaryLight = Color(0xFFA78BFA);        // Light purple
+  // Custom Color Palette: Vibrant Blue, Pink, Orange, Black
+  // Replaced purple with a more visible vibrant blue for better contrast and accessibility
+  static const Color primaryColor = Color(0xFF0D6EFD);        // Vibrant Blue
+  static const Color primaryLight = Color(0xFF66B2FF);        // Light blue
   static const Color secondaryColor = Color(0xFFEC4899);      // Pink
   static const Color tertiaryColor = Color(0xFFF97316);       // Orange
   static const Color accentColor = Color(0xFFF97316);         // Orange

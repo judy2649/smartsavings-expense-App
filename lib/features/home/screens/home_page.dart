@@ -128,7 +128,7 @@ class HomePage extends StatelessWidget {
                               Expanded(
                                 flex: 4,
                                 child: Card(
-                                  color: const Color(0xFF1F4788).withOpacity(0.9),
+                                      color: const Color(0xFF374151).withOpacity(0.95),
                                   elevation: 8,
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                                   child: Padding(
@@ -137,6 +137,8 @@ class HomePage extends StatelessWidget {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text('Features of this app', style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.white, fontWeight: FontWeight.w700)),
+                                            const SizedBox(height: 8),
+                                            Container(height: 4, width: 64, decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary, borderRadius: BorderRadius.circular(4))),
                                         const SizedBox(height: 12),
                                         const _FeatureItem(text: 'User Authentication and Security'),
                                         const _FeatureItem(text: 'Dashboard Overview'),
