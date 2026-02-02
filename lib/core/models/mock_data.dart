@@ -1,7 +1,7 @@
 import 'account_model.dart';
 import 'transaction_model.dart';
 import 'budget_model.dart';
-import 'savings_goal_model.dart';
+import 'savings_goal.dart';
 
 class MockData {
   static final List<Account> sampleAccounts = [

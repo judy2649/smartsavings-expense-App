@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/savings_goal_model.dart';
+import '../models/savings_goal.dart';
 
 class SavingsGoalsRepository {
   final FirebaseFirestore _firestore;

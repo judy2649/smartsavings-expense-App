@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import '../../../core/models/mock_data.dart';
+import '../../../core/providers/savings_provider.dart';
+import '../../../core/models/savings_goal.dart';
 import '../../../core/theme/app_theme.dart';
 
 class SavingsDashboardScreen extends StatelessWidget {
@@ -8,7 +11,8 @@ class SavingsDashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final goals = MockData.sampleGoals;
+    final provider = Provider.of<SavingsProvider>(context);
+    final goals = provider.goals.isNotEmpty ? provider.goals : MockData.sampleGoals;
     
     final totalGoal = goals.fold<double>(
       0,
@@ -56,6 +60,64 @@ class SavingsDashboardScreen extends StatelessWidget {
             _buildProgressSection(goals),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _showAddGoalDialog(context, provider),
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+
+  void _showAddGoalDialog(BuildContext context, SavingsProvider provider) {
+    final nameCtrl = TextEditingController();
+    final amountCtrl = TextEditingController();
+    DateTime? deadline;
+
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Create Savings Goal'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(controller: nameCtrl, decoration: const InputDecoration(labelText: 'Goal name')),
+            TextField(controller: amountCtrl, decoration: const InputDecoration(labelText: 'Target amount'), keyboardType: TextInputType.number),
+            const SizedBox(height: 8),
+            ElevatedButton(
+              onPressed: () async {
+                final picked = await showDatePicker(context: context, initialDate: DateTime.now().add(const Duration(days: 30)), firstDate: DateTime.now(), lastDate: DateTime.now().add(const Duration(days: 3650)));
+                if (picked != null) {
+                  deadline = picked;
+                }
+              },
+              child: const Text('Pick deadline'),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(ctx).pop(), child: const Text('Cancel')),
+          ElevatedButton(
+            onPressed: () {
+              final name = nameCtrl.text.trim();
+              final target = double.tryParse(amountCtrl.text) ?? 0.0;
+              if (name.isEmpty || target <= 0) return;
+              final id = 'goal_${DateTime.now().millisecondsSinceEpoch}';
+              final goal = SavingsGoal(
+                id: id,
+                userId: 'user_001',
+                name: name,
+                targetAmount: target,
+                currentAmount: 0.0,
+                deadline: deadline ?? DateTime.now().add(const Duration(days: 90)),
+                createdAt: DateTime.now(),
+              );
+              provider.createGoal(goal);
+              Navigator.of(ctx).pop();
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Goal created')));
+            },
+            child: const Text('Create'),
+          ),
+        ],
       ),
     );
   }

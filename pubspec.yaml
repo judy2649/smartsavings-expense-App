@@ -76,6 +76,7 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/animations/
+    - assets/wireframes/
   
   # Fonts commented out for now (will use system fonts)
   # Uncomment and add font files when available

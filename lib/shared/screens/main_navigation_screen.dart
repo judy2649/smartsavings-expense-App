@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/app_theme.dart';
-import '../../features/dashboard/screens/dashboard_screen.dart';
-import '../../features/expenses/screens/expenses_dashboard_screen.dart';
-import '../../features/budgets/screens/budget_dashboard_screen.dart';
-import '../../features/savings_goals/screens/savings_dashboard_screen.dart';
+import '../../features/ui/ui_screens.dart' as ui;
+// legacy dashboard screens replaced by UI prototypes
 import '../../features/reports/screens/insights_dashboard_screen.dart';
-import '../../features/accounts/screens/accounts_dashboard_screen.dart';
+// accounts dashboard replaced by UI accounts screen
 import '../../features/settings/screens/settings_dashboard_screen.dart';
 import '../../features/accounts/screens/accounts_screen.dart';
 import '../../features/accounts/screens/add_account_screen.dart';
 import '../../features/transactions/screens/transactions_screen.dart';
 import '../../features/transactions/screens/add_transaction_screen.dart';
+import '../../features/accounts/screens/connect_accounts_screen.dart';
 import '../../features/budgets/screens/budgets_screen.dart';
 import '../../features/budgets/screens/add_budget_screen.dart';
 import '../../features/savings_goals/screens/savings_goals_screen.dart';
@@ -38,6 +37,13 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     {'label': 'Insights', 'icon': Icons.analytics_outlined, 'route': 'insights', 'category': 'Overview'},
     {'label': 'Accounts', 'icon': Icons.account_balance_wallet_outlined, 'route': 'accounts-dash', 'category': 'Management'},
     {'label': 'Settings', 'icon': Icons.settings_outlined, 'route': 'settings-dash', 'category': 'Management'},
+    // Prototype UI screens
+    {'label': 'UI Dashboard', 'icon': Icons.dashboard_outlined, 'route': 'ui-dashboard', 'category': 'Prototype'},
+    {'label': 'UI Transactions', 'icon': Icons.list_alt_outlined, 'route': 'ui-transactions', 'category': 'Prototype'},
+    {'label': 'UI Budgets', 'icon': Icons.pie_chart_outline, 'route': 'ui-budgets', 'category': 'Prototype'},
+    {'label': 'UI Goals', 'icon': Icons.flag_outlined, 'route': 'ui-goals', 'category': 'Prototype'},
+    {'label': 'UI Accounts', 'icon': Icons.account_balance_wallet_outlined, 'route': 'ui-accounts', 'category': 'Prototype'},
+    {'label': 'Wireframes', 'icon': Icons.image_outlined, 'route': 'wireframes', 'category': 'Prototype'},
   ];
 
   @override
@@ -64,55 +70,76 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
               },
             ),
           
-          // Main Content Area
+          // Main Content Area with business-photo background
           Expanded(
-            child: Column(
+            child: Stack(
               children: [
-                // Header with branding and actions
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.95),
-                    border: Border(
-                      bottom: BorderSide(color: AppTheme.borderColor, width: 1),
-                    ),
+                // Business/people background image
+                Positioned.fill(
+                  child: Image.network(
+                    'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1600&q=80',
+                    fit: BoxFit.cover,
+                    color: Colors.black.withOpacity(0.25),
+                    colorBlendMode: BlendMode.darken,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
+                ),
+                // Foreground content with header and pages
+                Column(
+                  children: [
+                    // Header with branding and actions
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.95),
+                        border: Border(
+                          bottom: BorderSide(color: AppTheme.borderColor, width: 1),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          if (isMobile)
-                            IconButton(
-                              icon: Icon(_isSidebarOpen ? Icons.menu_open : Icons.menu),
-                              onPressed: () => setState(() => _isSidebarOpen = !_isSidebarOpen),
-                            ),
-                          const SizedBox(width: 8),
-                          Text(
-                            _getPageTitle(_selectedRoute),
-                            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                              color: AppTheme.textPrimary,
-                              fontWeight: FontWeight.w600,
-                            ),
+                          Row(
+                            children: [
+                              if (isMobile)
+                                IconButton(
+                                  icon: Icon(_isSidebarOpen ? Icons.menu_open : Icons.menu),
+                                  onPressed: () => setState(() => _isSidebarOpen = !_isSidebarOpen),
+                                ),
+                              const SizedBox(width: 8),
+                              Text(
+                                _getPageTitle(_selectedRoute),
+                                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                  color: AppTheme.textPrimary,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              _buildHeaderAction(Icons.refresh_outlined, 'Refresh', () {}),
+                              const SizedBox(width: 16),
+                              _buildHeaderAction(Icons.download_outlined, 'Export', () {}),
+                              const SizedBox(width: 16),
+                              // Menu: open dashboards list
+                              Tooltip(
+                                message: 'Dashboards',
+                                child: IconButton(
+                                  icon: const Icon(Icons.menu, color: AppTheme.primaryColor),
+                                  onPressed: () => _showDashboardsMenu(context),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                      Row(
-                        children: [
-                          _buildHeaderAction(Icons.refresh_outlined, 'Refresh', () {}),
-                          const SizedBox(width: 16),
-                          _buildHeaderAction(Icons.download_outlined, 'Export', () {}),
-                          const SizedBox(width: 16),
-                          _buildHeaderAction(Icons.more_vert, 'More', () {}),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                
-                // Content
-                Expanded(
-                  child: _buildContent(),
+                    ),
+
+                    // Content
+                    Expanded(
+                      child: _buildContent(),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -122,20 +149,45 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     );
   }
 
+  void _showDashboardsMenu(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (ctx) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: _dashboardItems.map((item) {
+              return ListTile(
+                leading: Icon(item['icon'], color: AppTheme.primaryColor),
+                title: Text(item['label']),
+                subtitle: item['category'] != null ? Text(item['category']) : null,
+                onTap: () {
+                  Navigator.of(ctx).pop();
+                  setState(() => _selectedRoute = item['route']);
+                  context.go('/home/${item['route']}');
+                },
+              );
+            }).toList(),
+          ),
+        );
+      },
+    );
+  }
+
   Widget _buildContent() {
     switch (_selectedRoute) {
       case 'dashboard':
-        return const DashboardScreen();
+        return const ui.DashboardScreen();
       case 'expenses':
-        return const ExpensesDashboardScreen();
+        return const ui.TransactionsScreen();
       case 'budgets-dash':
-        return const BudgetDashboardScreen();
+        return const ui.BudgetsScreen();
       case 'savings-dash':
-        return const SavingsDashboardScreen();
+        return const ui.GoalsScreen();
       case 'insights':
         return const InsightsDashboardScreen();
       case 'accounts-dash':
-        return const AccountsDashboardScreen();
+        return const ui.AccountsScreen();
       case 'settings-dash':
         return const SettingsDashboardScreen();
       case 'accounts':
@@ -146,6 +198,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         return const TransactionsScreen();
       case 'transactions/add':
         return const AddTransactionScreen();
+      case 'connect-accounts':
+        return const ConnectAccountsScreen();
       case 'budgets':
         return const BudgetsScreen();
       case 'budgets/add':
@@ -158,8 +212,21 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         return const ReportsScreen();
       case 'settings':
         return const SettingsScreen();
+      // Prototype UI screens
+      case 'ui-dashboard':
+        return const ui.DashboardScreen();
+      case 'ui-transactions':
+        return const ui.TransactionsScreen();
+      case 'ui-budgets':
+        return const ui.BudgetsScreen();
+      case 'ui-goals':
+        return const ui.GoalsScreen();
+      case 'ui-accounts':
+        return const ui.AccountsScreen();
+      case 'wireframes':
+        return const ui.WireframePreviewScreen();
       default:
-        return const DashboardScreen();
+        return const ui.DashboardScreen();
     }
   }
 

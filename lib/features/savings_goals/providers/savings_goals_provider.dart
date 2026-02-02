@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/repositories/savings_goals_repository.dart';
-import '../../../core/models/savings_goal_model.dart';
+import '../../../core/models/savings_goal.dart';
 import '../../../core/services/service_locator.dart';
 
 class SavingsGoalsProvider extends ChangeNotifier {

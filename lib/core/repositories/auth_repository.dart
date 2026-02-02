@@ -34,10 +34,12 @@ class MockUserCredential implements fb.UserCredential {
   // them with @override.
   fb.UserCredential? get previousUserCredential => null;
 
+  @override
   fb.AuthCredential? get credential => null;
 
   dynamic get operationType => null;
 
+  @override
   fb.AdditionalUserInfo? get additionalUserInfo => null;
 }
 

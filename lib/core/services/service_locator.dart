@@ -9,6 +9,7 @@ import '../repositories/budgets_repository.dart';
 import '../repositories/savings_goals_repository.dart';
 import 'aggregator_service.dart';
 import 'budget_engine_service.dart';
+import 'suggestion_service.dart';
 
 final getIt = GetIt.instance;
 
@@ -42,4 +43,6 @@ void setupServiceLocator() {
   // Core services
   getIt.registerLazySingleton<BudgetEngineService>(() => BudgetEngineService());
   getIt.registerLazySingleton<AggregatorService>(() => AggregatorService());
+  // Suggestion / insights service
+  getIt.registerLazySingleton(() => SuggestionService());
 }

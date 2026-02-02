@@ -88,9 +88,8 @@ class BudgetEngineService {
       double sum = 0.0;
       final now = DateTime.now();
       for (final g in goals) {
-        if (g.targetDate == null) continue;
-        final monthsLeft = max(1, ((g.targetDate!.difference(now).inDays) / 30).ceil());
-        final remaining = max(0.0, g.targetAmount - g.savedAmount);
+        final monthsLeft = max(1, ((g.deadline.difference(now).inDays) / 30).ceil());
+        final remaining = max(0.0, g.targetAmount - g.currentAmount);
         sum += (remaining / monthsLeft);
       }
       return sum;

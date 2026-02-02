@@ -341,6 +341,22 @@ flutter build web      # Web
 
 ---
 
+## 🛠️ Recent Automated Updates (by assistant)
+
+- Replaced legacy dashboard views with the new UI prototype dashboards for a cleaner, modern UX. The main app 'Home' now uses the UI dashboard, and Expenses/Budgets/Savings/Accounts dashboard routes render the new UI screens.
+- Disabled account linking and automated transaction importers in the demo environment to prevent accidental data imports. The `Connect Accounts` screen now shows an informational message and connect buttons are disabled.
+- Ran static analysis and unit tests after changes — unit tests passed; analyzer reports informational lints only.
+
+How to test the updated app locally:
+```bash
+flutter pub get
+flutter run
+# In the app: open the Home -> Dashboards (Home) to see the new UI dashboard
+# Visit Accounts to confirm connect buttons are disabled
+```
+
+---
+
 ## 🏆 What Makes This Special
 
 ### Architecture
