@@ -154,8 +154,8 @@ class InsightsDashboardScreen extends StatelessWidget {
   Widget _buildSavingsInsights(List<dynamic> goals) {
     final totalGoal = goals.fold<double>(0, (sum, g) => sum + g.targetAmount);
     final totalSaved =
-        goals.fold<double>(0, (sum, g) => sum + g.savedAmount);
-    final completionRate = (totalSaved / totalGoal * 100).toStringAsFixed(0);
+        goals.fold<double>(0, (sum, g) => sum + g.currentAmount);
+    final completionRate = totalGoal > 0 ? (totalSaved / totalGoal * 100).toStringAsFixed(0) : '0';
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
