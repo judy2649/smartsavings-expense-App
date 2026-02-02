@@ -28,18 +28,21 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.lightBg,
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: const NetworkImage(
+      body: Stack(
+        children: [
+          // Background image with graceful fallback on error
+          Positioned.fill(
+            child: Image.network(
               'https://images.unsplash.com/photo-1554224311-beee415c15c7?auto=format&fit=crop&w=1350&q=80',
+              fit: BoxFit.cover,
+              // very low opacity to mimic previous decoration opacity
+              color: Colors.black.withOpacity(0.92),
+              colorBlendMode: BlendMode.dstATop,
+              errorBuilder: (context, error, stackTrace) => const SizedBox.shrink(),
             ),
-            fit: BoxFit.cover,
-            opacity: 0.08,
           ),
-        ),
-        child: SafeArea(
-          child: Center(
+          SafeArea(
+            child: Center(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(24),
               child: ConstrainedBox(

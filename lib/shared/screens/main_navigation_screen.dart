@@ -81,6 +81,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                     fit: BoxFit.cover,
                     color: Colors.black.withOpacity(0.25),
                     colorBlendMode: BlendMode.darken,
+                    errorBuilder: (context, error, stackTrace) => Container(color: Colors.transparent),
                   ),
                 ),
                 // Foreground content with header and pages

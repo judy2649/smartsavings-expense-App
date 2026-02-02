@@ -73,19 +73,26 @@ class _Background extends StatelessWidget {
       future: _assetExists('assets/images/background.jpg'),
       builder: (context, snapshot) {
         final useAsset = snapshot.data == true;
-        final imageProvider = useAsset
-            ? const AssetImage('assets/images/background.jpg') as ImageProvider
-            : NetworkImage('https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1350&q=80');
 
-        return Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: imageProvider,
-              fit: BoxFit.cover,
-              colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.45), BlendMode.darken),
+        // Use an Image widget so we can provide an errorBuilder for network images
+        final Widget backgroundImage = useAsset
+            ? Image.asset('assets/images/background.jpg', fit: BoxFit.cover)
+            : Image.network(
+                'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1350&q=80',
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Container(color: Colors.black),
+              );
+
+        return Stack(
+          children: [
+            Positioned.fill(
+              child: ColorFiltered(
+                colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.45), BlendMode.darken),
+                child: backgroundImage,
+              ),
             ),
-          ),
-          child: child,
+            child,
+          ],
         );
       },
     );

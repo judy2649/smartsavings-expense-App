@@ -20,6 +20,7 @@ class HomePage extends StatelessWidget {
               fit: BoxFit.cover,
               color: Colors.black.withOpacity(0.35),
               colorBlendMode: BlendMode.darken,
+              errorBuilder: (context, error, stackTrace) => Container(color: Colors.transparent),
             ),
           ),
           SafeArea(
