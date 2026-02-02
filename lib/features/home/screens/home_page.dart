@@ -101,13 +101,23 @@ class HomePage extends StatelessWidget {
 
                                   Row(
                                     children: [
-                                      ElevatedButton(
-                                        onPressed: () => context.push('/signup'),
-                                        child: const Padding(
-                                          padding: EdgeInsets.symmetric(horizontal: 18, vertical: 14),
-                                          child: Text('Get Started'),
+                                      // Gradient CTA button for more visual emphasis
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(colors: [AppTheme.primaryColor, AppTheme.primaryLight]),
+                                          borderRadius: BorderRadius.circular(12),
+                                          boxShadow: [BoxShadow(color: AppTheme.primaryColor.withOpacity(0.2), blurRadius: 12, offset: const Offset(0, 6))],
                                         ),
-                                        style: ElevatedButton.styleFrom(backgroundColor: AppTheme.primaryColor),
+                                        child: ElevatedButton(
+                                          onPressed: () => context.push('/signup'),
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.transparent,
+                                            shadowColor: Colors.transparent,
+                                            padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 16),
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                          ),
+                                          child: const Text('Get Started', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
+                                        ),
                                       ),
                                       const SizedBox(width: 12),
                                       TextButton(
@@ -176,14 +186,27 @@ class _ReasonCard extends StatelessWidget {
       width: 280,
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: const Color(0xFF1F4788).withOpacity(0.8),
+        // Neutral card with subtle shadow and a soft border for modern look
+        color: Colors.white.withOpacity(0.06),
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.white.withOpacity(0.06)),
+        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.18), blurRadius: 8, offset: const Offset(0, 6))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white, fontWeight: FontWeight.w700)),
-          const SizedBox(height: 6),
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary.withOpacity(0.12), borderRadius: BorderRadius.circular(8)),
+                child: Icon(Icons.check, color: Theme.of(context).colorScheme.primary, size: 18),
+              ),
+              const SizedBox(width: 10),
+              Expanded(child: Text(title, style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white, fontWeight: FontWeight.w700))),
+            ],
+          ),
+          const SizedBox(height: 8),
           Text(subtitle, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white70)),
         ],
       ),
