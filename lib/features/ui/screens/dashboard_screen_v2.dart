@@ -26,7 +26,7 @@ class _DashboardScreenV2State extends State<DashboardScreenV2> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dashboard', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-        backgroundColor: const Color(0xFF1F4788),
+        backgroundColor: Theme.of(context).primaryColor,
         actions: const [Icon(Icons.notifications, color: Colors.white)],
       ),
       backgroundColor: const Color(0xFFF5F5F5),
